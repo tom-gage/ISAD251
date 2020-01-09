@@ -3,9 +3,9 @@
 
 class MenuItem
 {
-private $itemId, $title, $details, $isFood, $price, $withdrawn;
+private $itemId, $title, $details, $isFood, $price, $withdrawn, $amountInStock;
 
-    public function __construct($itemId, $title, $details, $isFood, $price, $withdrawn)
+    public function __construct($itemId, $title, $details, $isFood, $price, $withdrawn, $amountInStock)
     {
         $this->itemId = $itemId;
         $this->title = $title;
@@ -13,7 +13,7 @@ private $itemId, $title, $details, $isFood, $price, $withdrawn;
         $this->isFood = $isFood;
         $this->price = $price;
         $this->withdrawn = $withdrawn;
-
+        $this->amountInStock = $amountInStock;
     }
 
 
@@ -114,5 +114,21 @@ private $itemId, $title, $details, $isFood, $price, $withdrawn;
     public function setWithdrawn($withdrawn)
     {
         $this->withdrawn = $withdrawn;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmountInStock()
+    {
+        return $this->amountInStock;
+    }
+
+    /**
+     * @param mixed $amountInStock
+     */
+    public function setAmountInStock($amountInStock)
+    {
+        $this->amountInStock = $amountInStock;
     }
 }

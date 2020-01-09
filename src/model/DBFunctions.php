@@ -21,7 +21,7 @@ function getConnection()
     return $dbConnection;
 }
 
-function getAllMenuItems()
+function getAllMenuItems()//
 {
     $statement = getConnection()->prepare("CALL GetAllMenuItems()");
     $statement->execute();
@@ -43,7 +43,9 @@ function constructMenuItemObjects($menuItems){
         $price = $menuItems[$i]["Price"];
         $withdrawn = $menuItems[$i]["Withdrawn"];
 
-        $menuItem = new MenuItem($itemId, $title, $details, $isFood, $price, $withdrawn);
+        $amountInStock = getQuantityLeftInStock($itemId);
+
+        $menuItem = new MenuItem($itemId, $title, $details, $isFood, $price, $withdrawn, $amountInStock);
 
         array_push($constructedMenuItemsArray, $menuItem);
     }
@@ -55,7 +57,7 @@ function constructMenuItemObjects($menuItems){
 
 
 function getAllOrders(){
-    $statement = getConnection()->prepare("CALL GetAllOrders()");
+    $statement = getConnection()->prepare("SELECT * FROM ordersview");
     $statement->execute();
     $orders = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -156,25 +158,15 @@ function cancelOrder($canceledOrder){
     $statement->execute();
 }
 
+function setQuantityInStock($itemId, $quantity){
+    $statement = getConnection()->prepare("CALL SetStockQuantity(".$itemId.", ".$quantity.")");
+    $statement->execute();
+}
+
 function updatePage(){
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-
-
-
-
-
-
-
-
-
-function getOrders(){
-    $statement = getConnection()->prepare("CALL GetOrders()");
-    $statement->execute();
-    $resultSet = $statement ->fetchAll(PDO::FETCH_ASSOC);
-    return $resultSet;
-}
 
 
 
@@ -242,7 +234,7 @@ function createNewOrder($OrderId, $OrderDate, $CustomerId){
 
 function addItemToOrder($OrderId, $menuItemTitle, $Quantity)
 {
-    $statement = getConnection()->prepare("CALL IncrementOrderItemTest5(" . $OrderId . ", '" . $menuItemTitle . "', " . $Quantity . ")");
+    $statement = getConnection()->prepare("CALL AddItemToOrder(" . $OrderId . ", '" . $menuItemTitle . "', " . $Quantity . ")");
 
     $statement->execute();
 

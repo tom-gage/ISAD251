@@ -1,9 +1,9 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/DBFunctions.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/Menu.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/Order.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/DBFunctions.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/Menu.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/MenuItem.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/Order.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/OrderItem.php';
 ?>
 <html lang="en">
 <head>
@@ -39,7 +39,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
     .jumbotron {
         text-align: center;
 
-        background-image: url("/assets/img/cherryBlossom.jpg");
+        background-image: url("/ISAD251/btgage/assets/img/cherryBlossom.jpg");
         background-repeat: repeat;
     }
 
@@ -54,10 +54,10 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <a href="/public/admin.php" style="text-decoration: underline">Admin</a>
-        <a href="/index.php">Home</a>
-        <a href="/public/menu.php">Menu</a>
-        <a href="/public/order.php">Order</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>admin.php" style="text-decoration: underline">Admin</a>
+        <a href="/ISAD251/btgage/index.php">Home</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>menu.php">Menu</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>order.php">Order</a>
     </div>
 </nav>
 
@@ -98,7 +98,11 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                     $itemIsFood =  $menuItemsArray[$i]->getIsFood();
                     $itemPrice =  $menuItemsArray[$i]->getPrice();
                     $itemWithdrawn = $menuItemsArray[$i]->getWithdrawn();
+                    $amountInStock = $menuItemsArray[$i]->getAmountInStock();
 
+                    $amountInStock = $amountInStock[0]["Quantity"];
+
+//                    <span>Amount in stock:<input type="number" name="' . $itemId . 'amount" value="'.$amountInStock[0]["Quantity"].'" min="0" size="1"></span> <br>
                     echo '
                 <form action="admin.php" method="post">
                 <li class="list-group-item">
@@ -106,10 +110,13 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                 
                         <span>Menu Item ID: ' .$itemId.'</span><br>
                         <span>Title:<input type="text" name="' . $itemId . 'Title" value="'.$itemTitle.'" minlength="0" maxlength="100" size="20"></span> <br>
-                        <span>Details:<input type="text" name="' . $itemId . 'Details" value="'.$itemDetails.'" minlength="0" maxlength="200" size="30"></span> <br>
+                        <span>Details:<input type="text" name="' . $itemId . 'Details" value="'.$itemDetails.'" minlength="0" maxlength="400" size="30"></span> <br>
                         <span>Is food:<input type="number" name="' . $itemId . 'IsFood" value="'.$itemIsFood.'" min="0" max="1" size="1"></span> <br>
-                        <span>Price £<input type="number" name="' . $itemId . 'Price" value="'.$itemPrice.'"></span> <br>
+                        <span>Price £<input type="number" name="' . $itemId . 'Price" value="'.$itemPrice.'" min="1" max="100"></span> <br>
                         <span>Is withdrawn:<input type="number" name="' . $itemId . 'Withdrawn" value="'.$itemWithdrawn.'" min="0" max="1" size="1"></span> <br>
+                        <span>Amount in stock:<input type="number" name="' . $itemId . 'amount" value="'.$amountInStock.'" min="0" size="1"></span> <br>
+
+
                         
                         <input type="submit" name="' . $itemId . 'Edit" value="Commit edits to '.$itemTitle.'">
                 </li>
@@ -123,8 +130,10 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                         $newIsFood = $_POST[$itemId.'IsFood'];
                         $newPrice = $_POST[$itemId.'Price'];
                         $newWithdrawn = $_POST[$itemId.'Withdrawn'];
+                        $newAmount = $_POST[$itemId.'amount'];
 
                         editMenuItem($Id, $newTitle, $newDetails, $newIsFood, $newPrice, $newWithdrawn);
+                        setQuantityInStock($Id, $newAmount);
                         updatePage();
                     }
 
@@ -148,7 +157,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                 <li class="list-group-item">
                         <span>New Menu Item</span>
                         <span>Title:<input type="text" name="newTitle" value="" minlength="0" maxlength="100" size="20"></span> <br>
-                        <span>Details:<input type="text" name="newDetails" value="" minlength="0" maxlength="200" size="30"></span> <br>
+                        <span>Details:<input type="text" name="newDetails" value="" minlength="0" maxlength="400" size="30"></span> <br>
                         <span>Is food:<input type="number" name="newIsFood" value="" min="0" max="1" size="1"></span> <br>
                         <span>Price £<input type="number" name="newPrice" value=""></span> <br>
                         <span>Is withdrawn:<input type="number" name="newWithdrawn" value="" min="0" max="1" size="1"></span> <br>
@@ -178,7 +187,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
             <h3>View Open Orders</h3>
             ';
 
-                $orders = getOrders();
+//                $orders = getOrders();
 
                 $allOrders = getAllOrders();
 
@@ -198,10 +207,10 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                 ';
 
                     for ($x = 0; $x < count($itemsArray); ++$x){
-                        $itemTitlesArray = getMenuItemTitle($itemsArray[$i]->getItemId());
+                        $itemTitlesArray = getMenuItemTitle($itemsArray[$x]->getItemId());
                         $itemTitle = $itemTitlesArray[0]["Title"];
 
-                        $itemPriceArray = getMenuItemPrice($itemsArray[$i]->getItemId());
+                        $itemPriceArray = getMenuItemPrice($itemsArray[$x]->getItemId());
                         $itemPrice = $itemPriceArray[0]["Price"];
 
                         $quantity = $itemsArray[$x]->getQuantity();
@@ -220,7 +229,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php';
                 }
 
             }catch(Exception $e){
-
+                echo $e;
             }
 
 

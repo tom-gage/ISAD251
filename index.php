@@ -34,7 +34,8 @@
     .jumbotron {
         text-align: center;
 
-        background-image: url("/assets/img/cherryBlossom.jpg");
+        background-image: url("/ISAD251/btgage/assets/img/cherryBlossom.jpg");
+
         background-repeat: repeat;
     }
 
@@ -47,12 +48,14 @@
 
 <body>
 
+
+
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
-            <a href="/public/admin.php">Admin</a>
-            <a href="/index.php" style="text-decoration: underline">Home</a>
-            <a href="/public/menu.php">Menu</a>
-            <a href="/public/order.php">Order</a>
+            <a href= "<?php $_SERVER['DOCUMENT_ROOT'] ?>/ISAD251/btgage/public/admin.php">Admin</a>
+            <a href="/ISAD251/btgage/index.php" style="text-decoration: underline">Home</a>
+            <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>/ISAD251/btgage/public/menu.php">Menu</a>
+            <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>/ISAD251/btgage/public/order.php">Order</a>
         </div>
     </nav>
 
@@ -66,7 +69,7 @@
     </div>
 
     <div id="orderNow">
-        <a class="btn btn-success" href="/public/menu.php">Order Now!</a>
+        <a class="btn btn-success" href="<?php $_SERVER['DOCUMENT_ROOT'] ?>public/menu.php">Order Now!</a>
     </div>
 
 </body>

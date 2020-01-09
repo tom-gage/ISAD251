@@ -1,12 +1,12 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/DBFunctions.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/Order.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php'
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/DBFunctions.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/MenuItem.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/Order.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/OrderItem.php'
 ?>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Your Order</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -43,7 +43,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php'
     .jumbotron {
         text-align: center;
 
-        background-image: url("/assets/img/cherryBlossom.jpg");
+        background-image: url("/ISAD251/btgage/assets/img/cherryBlossom.jpg");
         background-repeat: repeat;
     }
 
@@ -55,10 +55,10 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/OrderItem.php'
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <a href="/public/admin.php">Admin</a>
-        <a href="/index.php">Home</a>
-        <a href="/public/menu.php">Menu</a>
-        <a href="/public/order.php" style="text-decoration: underline">Order</a>
+        <a href="<?php $_SERVER['HTTP_HOST'] ?>admin.php">Admin</a>
+        <a href="/ISAD251/btgage/index.php">Home</a>
+        <a href="<?php $_SERVER['HTTP_HOST'] ?>menu.php">Menu</a>
+        <a href="<?php $_SERVER['HTTP_HOST'] ?>order.php" style="text-decoration: underline">Order</a>
     </div>
 </nav>
 

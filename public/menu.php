@@ -1,7 +1,12 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/DBFunctions.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/Menu.php';
-include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php'
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/DBFunctions.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/Menu.php';
+include $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/MenuItem.php';
+
+//echo $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/DBFunctions.php'."<br>";
+//echo $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/Menu.php'."<br>";
+//echo $_SERVER['DOCUMENT_ROOT'].'/ISAD251/btgage/src/model/MenuItem.php'."<br>";
+
 ?>
 <html lang="en">
 <head>
@@ -44,7 +49,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php'
 
     .jumbotron {
         text-align: center;
-        background-image: url("/assets/img/cherryBlossom.jpg");
+        background-image: url("/ISAD251/btgage/assets/img/cherryBlossom.jpg");
         background-repeat: repeat;
     }
 
@@ -54,10 +59,10 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php'
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <a href="/public/admin.php">Admin</a>
-        <a href="/index.php">Home</a>
-        <a href="/public/menu.php" style="text-decoration: underline">Menu</a>
-        <a href="/public/order.php">Order</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>admin.php">Admin</a>
+        <a href="/ISAD251/btgage/index.php">Home</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>menu.php" style="text-decoration: underline">Menu</a>
+        <a href="<?php $_SERVER['DOCUMENT_ROOT'] ?>order.php">Order</a>
     </div>
 </nav>
 <div class="jumbotron">
@@ -102,13 +107,13 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php'
                     $itemWithdrawn = $menuItemsArray[$i]->getWithdrawn();
 
                     $quantityLeftInStock = getQuantityLeftInStock($itemId);
-                    if(!empty($quantityLeftInStock)){
-                        $quantityLeftInStock = $quantityLeftInStock[0]["Quantity"];
-                    }else{
-                        $quantityLeftInStock = 0;
-                    }
+                        if(!empty($quantityLeftInStock)){
+                            $quantityLeftInStock = $quantityLeftInStock[0]["Quantity"];
+                        }else{
+                            $quantityLeftInStock = 0;
+                        }
 
-                    if($itemWithdrawn == 0){
+                        if($itemWithdrawn == 0){
                         echo '        
                         <li class="list-group-item">
                             ' . $itemTitle . ' - ' . $itemDetails . ' - £' . $itemPrice . '
@@ -132,6 +137,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/src/model/MenuItem.php'
 
 
                         createNewOrder($orderId, $date, 1);
+
                         addItemToOrder($orderId, $itemTitle, $quantity);
                         updatePage();
 
